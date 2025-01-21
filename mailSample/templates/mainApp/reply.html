@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>查看回覆</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">查看回覆</h1>
+        <div class="card mt-3">
+            <div class="card-body">
+                <p><strong>訊息：</strong> {{ mail.text }}</p>
+                <p><strong>是否匿名：</strong> {{ mail.if_anonymous }}</p>
+                {% if not mail.if_anonymous %}
+                    <p><strong>姓名：</strong> {{ mail.user_name }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Respond to Message{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div style="width: 500px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); background-color: #f9f9f9;">
+        <h2 style="text-align: center; margin-bottom: 20px;">Respond to Message</h2>
+        <div style="margin-bottom: 15px;">
+            <p><strong>UUID:</strong> {{ message.uuid }}</p>
+            <p><strong>Text:</strong> {{ message.text }}</p>
+            <p><strong>Username:</strong> {{ message.user_name }}</p>
+            <p><strong>Created At:</strong> {{ message.create_time }}</p>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+                <label for="answer" style="display: block; margin-bottom: 5px;">Your Response:</label>
+                <textarea id="answer" name="answer" rows="5" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: none;">{% if feedback %}{{ feedback.answer }}{% endif %}</textarea>
+            </div>
+            <button type="submit" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

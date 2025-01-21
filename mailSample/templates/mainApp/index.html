@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="header01 trackm5 cid-uAtGSNkRzm" id="header01-8">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-5 card">
+                <div class="content-wrapper">
+                    <h1 class="mbr-section-title mbr-fonts-style display-1">
+                        TrackM5 <br> <span>Theme</span>
+                    </h1>
+                    <div class="mbr-section-btn">
+                        <a class="btn btn-info display-4" href="#">Play Tracks</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-7 card">
+                <div class="image-wrapper">
+                    <div class="icon-wrapper">
+                        <span class="mbr-iconfont socicon-discord socicon"></span>
+                        <span class="mbr-iconfont socicon-twitch socicon"></span>
+                        <span class="mbr-iconfont mobi-mbri-video-play mobi-mbri"></span>
+                    </div>
+                    <div class="image-wrap">
+                        <img src="{% static 'assets/images/image18.jpg' %}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section data-bs-version="5.1" class="form01 healthm5 cid-uAtF6cUiVS mbr-fullscreen" id="form01-0">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="content-wrapper">
+                    <img class="main-image" src="{% static 'assets/images/background1.jpg' %}" alt="">
+                    <div class="content-wrap">
+                        <div class="title-wrapper">
+                            <div class="desc-wrapper">
+                                <p class="mbr-desc mbr-fonts-style display-4">
+                                    聯繫我們
+                                </p>
+                            </div>
+                            <h2 class="mbr-section-title mbr-fonts-style display-2">
+                                聯繫方式
+                            </h2>
+                            <div class="text-wrapper">
+                                <p class="mbr-text mbr-fonts-style display-4">
+                                    我們會盡快回覆您的問題！
+                                </p>
+                            </div>
+                            <div class="social-wrapper">
+                                <div class="social-wrap">
+                                    <div class="soc-item">
+                                        <a href="#">
+                                            <div class="icon-wrapper">
+                                                <span class="mbr-iconfont socicon socicon-instagram"></span>
+                                            </div>
+                                            <p class="mbr-soc mbr-fonts-style display-4">
+                                                Instagram
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div class="soc-item">
+                                        <a href="#">
+                                            <div class="icon-wrapper">
+                                                <span class="mbr-iconfont socicon socicon-facebook"></span>
+                                            </div>
+                                            <p class="mbr-soc mbr-fonts-style display-4">
+                                                Facebook
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div class="soc-item">
+                                        <a href="#">
+                                            <div class="icon-wrapper">
+                                                <span class="mbr-iconfont socicon socicon-linkedin"></span>
+                                            </div>
+                                            <p class="mbr-soc mbr-fonts-style display-4">
+                                                LinkedIn
+                                            </p>
+                                        </a>
+                                    </div>
+                                    <div class="soc-item">
+                                        <a href="#">
+                                            <div class="icon-wrapper">
+                                                <span class="mbr-iconfont socicon socicon-twitter"></span>
+                                            </div>
+                                            <p class="mbr-soc mbr-fonts-style display-4">
+                                                Twitter
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-wrapper mbr-form" data-form-type="formoid">
+                            <form action="{% url 'submit_form' %}" method="POST" class="mbr-form form-with-styler">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <!-- 顯示成功或錯誤消息 -->
+                                    {% if error %}
+                                        <div class="alert alert-danger col-12">{{ error }}</div>
+                                    {% endif %}
+                                    {% if success %}
+                                        <div class="alert alert-success col-12">{{ success }}</div>
+                                        <p><strong>唯一識別碼：</strong> {{ uuid }}</p>
+                                        <p><strong>二維碼鏈接：</strong> <a href="{{ qr_url }}" target="_blank">{{ qr_url }}</a></p>
+                                        <img src="data:image/png;base64,{{ qr_base64 }}" alt="QR Code" class="img-fluid">
+                                    {% endif %}
+                                </div>
+                                <div class="dragArea row">
+                                    <div class="col-lg-6 col-md-12 col-sm-12 form-group mb-3">
+                                        <label for="ifAnonymous" class="form-control-label mbr-fonts-style display-4">是否匿名</label>
+                                        <select name="ifAnonymous" id="ifAnonymous" class="form-control" required style="font-size: 0.9rem; color: gray;">
+                                            <option value="0">我是社恐</option>
+                                            <option value="1">我是社牛</option>
+                                        </select>
+                                        
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-12 form-group mb-3">
+                                        <label for="userName" class="form-control-label mbr-fonts-style display-4">B站名稱:</label>
+                                        <input type="text" name="userName" placeholder="請輸入你的B站名稱" class="form-control display-7" id="userName">
+                                    </div>
+                                    <div data-for="textarea" class="col-lg-12 col-md-12 col-sm-12 form-group mb-3">
+                                        <label for="text" class="form-control-label mbr-fonts-style display-4">你想說啥</label>
+                                        <textarea name="text" placeholder="請輸入您的悄悄話" class="form-control display-7" id="text" required></textarea>
+                                    </div>
+                                     
+                                    <div class="col mbr-section-btn">
+                                        <button type="submit" class="btn btn-primary display-4">提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

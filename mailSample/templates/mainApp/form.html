@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="header-section">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1 class="mbr-section-title mbr-fonts-style display-2">歡迎來到我們的網站</h1>
+                <p class="mbr-text mbr-fonts-style display-5">透過以下表單向我們提交您的訊息。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="form01 healthm5 cid-uAtF6cUiVS mbr-fullscreen" id="form01-0">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="content-wrapper">
+                    <img class="main-image" src="{% static 'assets/images/background1.jpg' %}" alt="">
+                    <div class="content-wrap">
+                        <h2 class="mbr-section-title mbr-fonts-style display-2">聯絡我們</h2>
+                        <p class="mbr-text mbr-fonts-style display-4">
+                            我們將盡快回覆您的訊息！
+                        </p>
+                        <form action="{% url 'submit_form' %}" method="POST" class="mbr-form form-with-styler">
+                            {% csrf_token %}
+                            <div class="row">
+                                {% if error %}
+                                    <div class="alert alert-danger col-12">{{ error }}</div>
+                                {% endif %}
+                                {% if success %}
+                                <div class="bg-white p-4 rounded shadow mt-4">
+                                    <div class="alert alert-success text-center">{{ success }}</div>
+                                    <div class="text-center">
+                                        <p><strong>唯一識別碼：</strong></p>
+                                        <p>{{ uuid }}</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p><strong>二維碼鏈接：</strong></p>
+                                        <p><a href="{{ qr_url }}" target="_blank">{{ qr_url }}</a></p>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <img src="data:image/png;base64,{{ qr_base64 }}" alt="QR Code" class="img-fluid" style="width: 300px; height: auto;">
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                                
+                            </div>
+                            <div class="dragArea row">
+                                <div class="col-lg-6 col-md-12 form-group mb-3">
+                                    <label for="ifAnonymous" class="form-control-label display-4">是否匿名</label>
+                                    <select name="ifAnonymous" id="ifAnonymous" class="form-control display-7" required>
+                                        <option value="0">是 (匿名)</option>
+                                        <option value="1">否 (不匿名)</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-12 form-group mb-3">
+                                    <label for="userName" class="form-control-label display-4">您的姓名</label>
+                                    <input type="text" name="userName" class="form-control display-7" id="userName" placeholder="請輸入您的姓名">
+                                </div>
+                                <div class="col-lg-12 form-group mb-3">
+                                    <label for="text" class="form-control-label display-4">訊息內容</label>
+                                    <textarea name="text" class="form-control display-7" id="text" placeholder="請輸入您的訊息內容" required></textarea>
+                                </div>
+                                <div class="col mbr-section-btn">
+                                    <button type="submit" class="btn btn-primary display-4">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

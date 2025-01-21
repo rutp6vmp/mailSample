@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}訊息列表{% endblock %}
+
+{% block content %}
+<br><br><br><br>
+ 
+<div style="display: flex; justify-content: center; flex-direction: column; align-items: center; padding: 20px;">
+    <h2 style="margin-bottom: 20px;">後台管理訊息列表</h2>
+
+    <!-- 篩選表單 -->
+    <form method="GET" action="{% url 'message_list' %}" style="margin-bottom: 20px; text-align: center; width: 80%;">
+        <label for="status" style="margin-right: 10px;">篩選狀態：</label>
+        <select name="status" id="status" style="padding: 5px;">
+            <option value="">全部</option>
+            <option value="1" {% if request.GET.status == "1" %}selected{% endif %}>已回答</option>
+            <option value="2" {% if request.GET.status == "2" %}selected{% endif %}>已閱</option>
+            <option value="0" {% if request.GET.status == "0" %}selected{% endif %}>未讀</option>
+        </select>
+        <button type="submit" style="padding: 5px 10px; background-color: #007bff; color: white; border: none;">篩選</button>
+    </form>
+
+    <!-- 訊息列表 -->
+    <table style="width: 80%; border-collapse: collapse; margin: 0 auto; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <thead>
+            <tr style="background-color: #007bff; color: white; text-align: left;">
+                <th style="padding: 10px; border: 1px solid #ddd;">唯一識別碼</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">訊息內容</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">用戶名稱</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">是否匿名</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">建立時間</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">狀態</th>
+                <th style="padding: 10px; border: 1px solid #ddd;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for message in messages %}
+            <tr style="background-color: '{% cycle '#f9f9f9' '#ffffff' %}';">
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ message.uuid }}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ message.text }}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ message.user_name }}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ message.if_anonymous|yesno:"是,否" }}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">{{ message.create_time }}</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                    {% if message.feedback %}
+                        {% if message.feedback.is_answered == 1 %}
+                            <span style="color: green;">已回答</span>
+                        {% elif message.feedback.is_answered == 2 %}
+                            <span style="color: orange;">已閱</span>
+                        {% else %}
+                            <span style="color: red;">未讀</span>
+                        {% endif %}
+                    {% else %}
+                        <span style="color: red;">未讀</span>
+                    {% endif %}
+                </td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                    <a href="{% url 'respond_message' message.uuid %}" style="color: #007bff; text-decoration: none;">回覆</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- 分頁 -->
+    <div style="margin-top: 20px; text-align: center; width: 80%;">
+        {% if messages.has_previous %}
+            <a href="?{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}page={{ messages.previous_page_number }}" style="margin-right: 10px;">上一頁</a>
+        {% endif %}
+        <span>第 {{ messages.number }} 頁，共 {{ messages.paginator.num_pages }} 頁</span>
+        {% if messages.has_next %}
+            <a href="?{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}page={{ messages.next_page_number }}" style="margin-left: 10px;">下一頁</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
